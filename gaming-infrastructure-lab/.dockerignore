@@ -1,0 +1,9 @@
+.git
+.env
+backups
+reports
+aws
+docs
+tests
+tools
+__pycache__

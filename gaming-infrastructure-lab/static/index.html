@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gaming Ops Lab | Operations console</title><link rel="stylesheet" href="/static/style.css">
+<script src="/static/dashboard.js" defer></script></head>
+<body><header><div class="brand"><span class="mark">GO</span><div><strong>Gaming Ops Lab</strong><small>Infrastructure &amp; security</small></div></div><span class="pill"><span class="dot"></span> LOCAL SIMULATION</span></header>
+<main><section class="intro"><div><p class="eyebrow">OPERATIONS CONSOLE</p><h1>Keep the game running.</h1><p>Multi-site infrastructure, security alerts and recovery readiness in one place.</p></div><button id="refresh" type="button">Refresh status</button></section>
+<div id="connection" role="status">Connecting to the lab...</div>
+<section class="metrics" aria-label="Overview"><article><p>Locations online</p><strong id="online">-</strong><small>Heartbeat in last 20 seconds</small></article><article><p>Open security alerts</p><strong id="alerts">-</strong><small>Awaiting triage or closure</small></article><article><p>Open findings</p><strong id="findings">-</strong><small>Awaiting verified remediation</small></article></section>
+<section class="panel"><div class="heading"><div><p class="eyebrow">01 / AVAILABILITY</p><h2>Gaming locations</h2></div><span class="hint">Auto-refresh every 5s</span></div><div id="sites" class="sites"></div></section>
+<section class="panel"><div class="heading"><div><p class="eyebrow">02 / SECURITY</p><h2>Alert queue</h2></div><span class="hint">Simulated SSH events</span></div><div id="alert-list"></div></section>
+<section class="panel"><div class="heading"><div><p class="eyebrow">03 / PATCH MANAGEMENT</p><h2>Vulnerability tracker</h2></div><span class="hint">Identify, remediate, verify</span></div><div id="finding-list"></div></section>
+<dialog id="editor"><form id="edit-form"><h2 id="editor-title">Update record</h2><label for="notes" id="notes-label">Notes</label><textarea id="notes" required maxlength="2000" rows="5"></textarea><div id="level-field" hidden><label for="level">Assessed severity</label><select id="level"><option>low</option><option>medium</option><option>high</option><option>critical</option></select></div><p id="form-error" role="alert"></p><div class="form-actions"><button type="button" id="cancel">Cancel</button><button type="submit">Save notes</button></div></form></dialog>
+<footer>Personal lab | Synthetic data only | No live company infrastructure</footer></main></body></html>

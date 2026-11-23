@@ -1,0 +1,6 @@
+2026-01-01T12:00:00Z lab-ubuntu sshd[1234]: Failed password for invalid user demo from 192.0.2.42 port 5120 ssh2
+2026-01-01T12:01:00Z lab-ubuntu sshd[1234]: Failed password for invalid user demo from 192.0.2.42 port 5121 ssh2
+2026-01-01T12:02:00Z lab-ubuntu sshd[1234]: Failed password for invalid user demo from 192.0.2.42 port 5122 ssh2
+2026-01-01T12:03:00Z lab-ubuntu sshd[1234]: Failed password for invalid user demo from 192.0.2.42 port 5123 ssh2
+2026-01-01T12:04:00Z lab-ubuntu sshd[1234]: Failed password for invalid user demo from 192.0.2.42 port 5124 ssh2
+2026-01-01T12:05:00Z lab-ubuntu sshd[1234]: Failed password for invalid user demo from 192.0.2.42 port 5125 ssh2

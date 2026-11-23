@@ -1,0 +1,43 @@
+name: Gaming lab checks
+on:
+  push:
+    paths:
+      - 'gaming-infrastructure-lab/**'
+      - '.github/workflows/gaming-lab.yml'
+  pull_request:
+    paths:
+      - 'gaming-infrastructure-lab/**'
+      - '.github/workflows/gaming-lab.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: gaming-infrastructure-lab
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit tests and syntax checks
+        run: |
+          python -m unittest discover -s tests -v
+          python -m compileall -q app.py agent.py tools tests
+          node --check static/dashboard.js
+      - name: Start local services
+        run: |
+          python tools/lab.py init
+          docker compose config --quiet
+          docker compose up -d --build --wait --wait-timeout 180
+      - name: Integration and recovery checks
+        run: python tools/smoke.py
+      - name: Show service status on failure
+        if: failure()
+        run: docker compose ps
+      - name: Stop disposable environment
+        if: always()
+        run: docker compose down -v

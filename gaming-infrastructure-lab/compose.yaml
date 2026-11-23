@@ -1,0 +1,70 @@
+name: gaming-ops
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: gaming
+      MYSQL_USER: gaming_app
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Run python tools/lab.py init}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Run python tools/lab.py init}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks: [data]
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_ROOT_PASSWORD\" mysql -uroot -e 'SELECT 1' >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+  api:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_USER: gaming_app
+      DB_PASSWORD: ${MYSQL_PASSWORD:?Run python tools/lab.py init}
+      DB_NAME: gaming
+    ports:
+      - "127.0.0.1:8080:8080"
+    networks: [data, sites]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/health', timeout=3)"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    security_opt: [no-new-privileges:true]
+  site-a:
+    build: .
+    command: ["python", "agent.py"]
+    environment:
+      SITE_ID: site-a
+      SITE_NAME: Gaming Location A
+    depends_on:
+      api:
+        condition: service_healthy
+    networks: [sites]
+    restart: unless-stopped
+    security_opt: [no-new-privileges:true]
+  site-b:
+    build: .
+    command: ["python", "agent.py"]
+    environment:
+      SITE_ID: site-b
+      SITE_NAME: Gaming Location B
+    depends_on:
+      api:
+        condition: service_healthy
+    networks: [sites]
+    restart: unless-stopped
+    security_opt: [no-new-privileges:true]
+networks:
+  data:
+    internal: true
+  sites: {}
+volumes:
+  mysql_data: {}
